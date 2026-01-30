@@ -1,7 +1,8 @@
-class DevBuildError extends Error {
+import { AppError } from "../errorHelper/appError.js";
+
+class DevBuildError extends AppError {
     constructor(message, statusCode) {
-        super(message);
-        this.statusCode = statusCode;
+        super(statusCode, message);
     }
 }
 

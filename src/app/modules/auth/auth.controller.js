@@ -250,6 +250,58 @@ const googleCallback = async (req, res, next) => {
   }
 };
 
+const changePassword = async (req, res, next) => {
+  try {
+    const { id } = req.user;
+    const { oldPassword, newPassword } = req.body;
+
+    if (!oldPassword || !newPassword) {
+      throw new DevBuildError(
+        "Both oldPassword and newPassword are required",
+        StatusCodes.BAD_REQUEST
+      );
+    }
+
+    await AuthService.changePassword(id, oldPassword, newPassword);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: StatusCodes.OK,
+      message: "Password changed successfully",
+      data: null,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getGoogleUrl = async (req, res, next) => {
+  try {
+    const redirect = req.query.redirect || "/";
+    const baseUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+    const params = new URLSearchParams({
+      client_id: envVars.GOOGLE_CLIENT_ID,
+      redirect_uri: envVars.GOOGLE_CALLBACK_URL,
+      response_type: "code",
+      scope: "profile email",
+      state: redirect,
+      access_type: "offline",
+      prompt: "consent",
+    });
+
+    sendResponse(res, {
+      success: true,
+      statusCode: StatusCodes.OK,
+      message: "Google login URL retrieved successfully",
+      data: {
+        url: `${baseUrl}?${params.toString()}`,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const AuthController = {
   credentialLogin,
   getNewAccessToken,
@@ -258,4 +310,6 @@ export const AuthController = {
   verifyForgotPasswordOtp,
   resetPassword,
   googleCallback,
+  changePassword,
+  getGoogleUrl,
 };

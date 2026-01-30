@@ -52,6 +52,12 @@ const loadEnvVars = () => {
       SMTP_PASS: process.env.SMTP_PASS,
       SMTP_FROM: process.env.SMTP_FROM,
     },
+    // Google OAuth
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    GOOGLE_CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL,
+    // Frontend
+    FRONT_END_URL: process.env.FRONT_END_URL,
   };
 };
 

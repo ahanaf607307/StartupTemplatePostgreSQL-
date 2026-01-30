@@ -54,33 +54,36 @@ This is a robust startup template for a backend application using Node.js, Expre
    - Production: `npm start`
 
 ## 🛣️ API Routes & CRUD
-
+### BASE URL > http://localhost:8000/api/
 ### Auth Module (`/api/auth`)
 | Method | Route | Description |
 | :--- | :--- | :--- |
-| POST | `/login` | User login with credentials |
-| POST | `/refresh-token` | Get a new access token |
-| POST | `/logout` | Log out user and clear session |
-| POST | `/forgot-password` | Initiate forgot password flow |
-| POST | `/verify-forgot-password-otp` | Verify OTP for password reset |
-| POST | `/reset-password` | Reset user password (Auth required) |
-| GET | `/google` | Initiate Google OAuth login |
-| GET | `/google/callback` | Google OAuth callback URL |
+| POST | `/auth/login` | User login with credentials |
+| POST | `/auth/refresh-token` | Get a new access token |
+| POST | `/auth/logout` | Log out user and clear session |
+| POST | `/auth/forgot-password` | Initiate forgot password flow |
+| POST | `/auth/verify-forgot-password-otp` | Verify OTP for password reset |
+| POST | `/auth/reset-password` | Reset user password (Auth required) |
+| POST | `/auth/change-password` | Change user password (Auth required) | OldPassword - NewPassword Required
+| GET | `/auth/google` | Initiate Google OAuth login |
+| GET | `/auth/google/callback` | Google OAuth callback URL |
 
 ### User Module (`/api/user`)
 | Method | Route | Description |
 | :--- | :--- | :--- |
-| POST | `/register` | Register a new user |
-| GET | `/profile/me` | Get current logged-in user profile |
-| GET | `/user-details/:id` | Get specific user details by ID |
-| GET | `/all` | Get all users with profiles |
-| POST | `/update-user` | Update user information |
+| POST | `/user/register` | Register a new user |
+| GET | `/user/profile/me` | Get current logged-in user profile |
+| GET | `/user/user-details/:id` | Get specific user details by ID |
+| GET | `/user/all` | Get all users with profiles |
+| POST | `/user/update-user` | Update user information |
 
 ### OTP Module (`/api/otp`)
 | Method | Route | Description |
 | :--- | :--- | :--- |
-| POST | `/send` | Send OTP to user email |
-| POST | `/verify` | Verify the sent OTP |
+| POST | `/otp/send` | Send OTP to user email |
+| POST | `/otp/verify` | Verify the sent OTP |
 
 ---
+
+## Postman Collection > [POSTMAN]StratupTemplate.postman.json
 *Created with ❤️ for rapid development.* ©️ Ahanaf Mubasshir

@@ -52,6 +52,47 @@ export const AuthService = {
 
     return true;
   },
+
+  changePassword: async (id, oldPassword, newPassword) => {
+    // 1. Fetch user
+    const user = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) {
+      throw new DevBuildError("User not found", StatusCodes.NOT_FOUND);
+    }
+
+    // 2. If user has no passwordHash (social login user), they can't "change" it this way
+    if (!user.passwordHash) {
+      throw new DevBuildError(
+        "Social login users cannot change password this way. Please set a password first or use forgot password.",
+        StatusCodes.BAD_REQUEST
+      );
+    }
+
+    // 3. Verify old password
+    const isMatch = await bcrypt.compare(oldPassword, user.passwordHash);
+    if (!isMatch) {
+      throw new DevBuildError("Invalid old password", StatusCodes.UNAUTHORIZED);
+    }
+
+    // 4. Hash new password
+    const hashedPassword = await bcrypt.hash(
+      newPassword,
+      Number(envVars.BCRYPT_SALT_ROUND || 10)
+    );
+
+    // 5. Update password
+    await prisma.user.update({
+      where: { id },
+      data: {
+        passwordHash: hashedPassword,
+      },
+    });
+
+    return true;
+  },
 };
 
 export const forgotPasswordService = async (prisma, email) => {
